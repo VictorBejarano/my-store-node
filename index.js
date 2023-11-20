@@ -4,6 +4,8 @@ const routerApi = require('./routes');
 const app = express(); // Se crea aplicacion
 const port = 3000;
 
+app.use(express.json())// Es necesario para recibir datos en JSON
+
 app.get('/', (req, res) => {
   res.send('Hola mi server en express');
 });

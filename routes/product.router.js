@@ -30,4 +30,12 @@ router.get('/filter', (req, res) => {
   res.send('Yo soy un filter');
 });
 
+router.post('/', (req, res) => {
+  const body = req.body;
+  res.json({
+    message: 'created',
+    data: body,
+  });
+});
+
 module.exports = router;
