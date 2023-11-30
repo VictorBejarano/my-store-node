@@ -1,12 +1,16 @@
 const express = require('express');
 const routerApi = require('./routes');
 
-const { logErrors, errorHandler} = require('./middlewares/error.handler')
+const {
+  logErrors,
+  errorHandler,
+  boomErrorHandler,
+} = require('./middlewares/error.handler');
 
 const app = express(); // Se crea aplicacion
 const port = 3000;
 
-app.use(express.json())// Es necesario para recibir datos en JSON
+app.use(express.json()); // Es necesario para recibir datos en JSON
 
 app.get('/', (req, res) => {
   res.send('Hola mi server en express');
@@ -18,8 +22,9 @@ app.get('/nueva-ruta', (req, res) => {
 
 routerApi(app);
 
-app.use(logErrors)
-app.use(errorHandler)
+app.use(logErrors);
+app.use(boomErrorHandler);
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log('Mi port' + port);
