@@ -13,7 +13,7 @@ const port = 3000;
 
 app.use(express.json()); // Es necesario para recibir datos en JSON
 
-const whiteList = ['http://localhost:8080', 'http://myapp.co'];
+const whiteList = ['http://localhost:3000', 'http://myapp.co'];
 const options = {
   origin: (origin, callback) => {
     if (whiteList.includes(origin)) {
@@ -24,7 +24,8 @@ const options = {
   },
 };
 
-app.use(cors(options));
+app.use(cors());
+// app.use(cors(options));
 
 app.get('/', (req, res) => {
   res.send('Hola mi server en express');
