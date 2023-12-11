@@ -1,6 +1,7 @@
 const boom = require('@hapi/boom');
 
 const { models } = require('./../libs/sequelize');
+
 class UserService {
   constructor() {}
 
@@ -23,13 +24,13 @@ class UserService {
   }
 
   async update(id, changes) {
-    const user = this.findOne(id)
+    const user = await this.findOne(id);
     const rta = await user.update(changes);
     return rta;
   }
 
   async delete(id) {
-    const user = this.findOne(id)
+    const user = await this.findOne(id);
     await user.destroy();
     return { id };
   }

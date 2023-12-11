@@ -2,13 +2,14 @@ const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 
 const sequelize = require('../libs/sequelize');
-class ProductsServices {
+
+class ProductsService {
   constructor() {
     this.products = [];
     this.generate();
   }
 
-  async generate() {
+  generate() {
     const limit = 100;
     for (let index = 0; index < limit; index++) {
       this.products.push({
@@ -49,23 +50,25 @@ class ProductsServices {
 
   async update(id, changes) {
     const index = this.products.findIndex((item) => item.id === id);
-
     if (index === -1) {
       throw boom.notFound('Product not found');
     }
     const product = this.products[index];
-    this.products[index] = { ...product, ...changes };
+    this.products[index] = {
+      ...product,
+      ...changes,
+    };
     return this.products[index];
   }
 
   async delete(id) {
     const index = this.products.findIndex((item) => item.id === id);
     if (index === -1) {
-      throw new Error('product not found');
+      throw boom.notFound('product not found');
     }
     this.products.splice(index, 1);
     return { id };
   }
 }
 
-module.exports = ProductsServices;
+module.exports = ProductsService;

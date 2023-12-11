@@ -6,38 +6,38 @@ const {
   logErrors,
   errorHandler,
   boomErrorHandler,
+  ormErrorHandler,
 } = require('./middlewares/error.handler');
 
 const app = express(); // Se crea aplicacion
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json()); // Es necesario para recibir datos en JSON
 
-const whiteList = ['http://localhost:3000', 'http://myapp.co'];
+const whitelist = ['http://localhost:8080', 'https://myapp.co'];
 const options = {
   origin: (origin, callback) => {
-    if (whiteList.includes(origin)) {
+    if (whitelist.includes(origin) || !origin) {
       callback(null, true);
     } else {
-      callback(new Error('no permitido'), true);
+      callback(new Error('no permitido'));
     }
   },
 };
-
-app.use(cors());
-// app.use(cors(options));
+app.use(cors(options));
 
 app.get('/', (req, res) => {
   res.send('Hola mi server en express');
 });
 
 app.get('/nueva-ruta', (req, res) => {
-  res.send('Hola soy una nueva ruta');
+  res.send('Hola, soy una nueva ruta');
 });
 
 routerApi(app);
 
 app.use(logErrors);
+app.use(ormErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
